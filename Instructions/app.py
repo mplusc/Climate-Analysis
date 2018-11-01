@@ -45,16 +45,12 @@ def welcome():
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     """Return a list of rain fall for prior year"""
-#    * Query for the dates and precipitation observations from the last year.
-#           * Convert the query results to a Dictionary using `date` as the key and `prcp` as the value.
-#           * Return the json representation of your dictionary.
     last_date = session.query(Measurements.date).order_by(Measurements.date.desc()).first()
     last_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
     rain = session.query(Measurements.date, Measurements.prcp).\
         filter(Measurements.date > last_year).\
         order_by(Measurements.date).all()
 
-# Create a list of dicts with `date` and `prcp` as the keys and values
     rain_totals = []
     for result in rain:
         row = {}
@@ -74,16 +70,13 @@ def stations():
 @app.route("/api/v1.0/tobs")
 def tobs():
     """Return a list of temperatures for prior year"""
-#    * Query for the dates and temperature observations from the last year.
-#           * Convert the query results to a Dictionary using `date` as the key and `tobs` as the value.
-#           * Return the json representation of your dictionary.
+
     last_date = session.query(Measurements.date).order_by(Measurements.date.desc()).first()
     last_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
     temperature = session.query(Measurements.date, Measurements.tobs).\
         filter(Measurements.date > last_year).\
         order_by(Measurements.date).all()
 
-# Create a list of dicts with `date` and `tobs` as the keys and values
     temperature_totals = []
     for result in temperature:
         row = {}
@@ -96,8 +89,7 @@ def tobs():
 
 @app.route("/api/v1.0/<start>")
 def trip1(start):
-
- # go back one year from start date and go to end of data for Min/Avg/Max temp   
+ 
     start_date= dt.datetime.strptime(start, '%Y-%m-%d')
     last_year = dt.timedelta(days=365)
     start = start_date-last_year
@@ -110,8 +102,7 @@ def trip1(start):
 
 @app.route("/api/v1.0/<start>/<end>")
 def trip2(start,end):
-
-  # go back one year from start/end date and get Min/Avg/Max temp     
+ 
     start_date= dt.datetime.strptime(start, '%Y-%m-%d')
     end_date= dt.datetime.strptime(end,'%Y-%m-%d')
     last_year = dt.timedelta(days=365)
